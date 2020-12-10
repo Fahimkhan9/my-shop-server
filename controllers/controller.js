@@ -6,6 +6,6 @@ module.exports.home_get = (req, res) => {
 module.exports.get_product_by_category = (req, res) => {
   const { category } = req.params;
   Product.find({ category: category })
-    .then((res) => console.log(res))
+    .then((result) => res.send(result))
     .catch((err) => console.log(err));
 };
