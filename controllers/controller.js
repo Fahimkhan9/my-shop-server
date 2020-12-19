@@ -1,4 +1,4 @@
-const uuid = require("uuid")
+const { uuid } = require('uuidv4');
 const stripe = require('stripe')(`${process.env.KEY}`)
 const Product = require("../models/products");
 
@@ -16,6 +16,7 @@ module.exports.handle_payment =(req,res) => {
   const {product,token} = req.body 
   console.log(product);
   console.log(product.price);
+  console.log(token);
   const idempotencykey = uuid()
 return stripe.customers.create({
   email:token.email,
@@ -27,7 +28,7 @@ return stripe.customers.create({
     currency: 'usd',
     customer:customer.id,
     receipt_email:token.email,
-    description: `purchase of ${product.name} `,
+    description: `purchase of `,
     shipping: {
       name:token.card.name,
       address: {
@@ -37,6 +38,6 @@ return stripe.customers.create({
   },{idempotencykey})
 })
 .then(result => res.status(200).json(result) )
-.catch(err => console.log(err))
-  // console.log(token);
+.catch(err => console.log('from catch',err))
+  
 }
